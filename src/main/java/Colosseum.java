@@ -18,6 +18,11 @@ public class Colosseum {
     static final int MAX_HIT_POINTS = 50;
 
     /**
+     * The maximum number of hit points we will allow a Pokemon to start with.
+     */
+    static final int MAX_STAT = 50;
+
+    /**
      * The maximum number of rounds we will let the Pokemon battle.
      */
     static final int MAX_NUM_ROUNDS = 10;
@@ -103,8 +108,60 @@ public class Colosseum {
      *         <p>
      */
     public static Pokemon buildPokemon() {
-        Pokemon returnPokemon = null;
-        return returnPokemon;
+        Pokemon tempPokemon = new Pokemon();
+
+        System.out.println("Please choose your Pokemon type:");
+        System.out.println("0 -- FIRE");
+        System.out.println("1 -- WATER");
+        System.out.println("2 -- ELECTRIC");
+
+        int typeIn = myScan.nextInt();
+        while (typeIn < 0 || typeIn > 2) {
+            System.out.println("Error! Please choose a valid type (0-2):");
+            System.out.println("0 -- FIRE");
+            System.out.println("1 -- WATER");
+            System.out.println("2 -- ELECTRIC");
+            typeIn = myScan.nextInt();
+        }
+
+        switch (typeIn) {
+            case 0: tempPokemon = new FirePokemon();
+                    break;
+            case 1: tempPokemon = new WaterPokemon();
+                    break;
+            case 2: tempPokemon = new ElectricPokemon();
+                    break;
+            default:break;
+        }
+
+        System.out.println("You have chosen: " + tempPokemon.pokeType.toString() + " type!");
+
+        System.out.print("Please name your Pokemon: ");
+        tempPokemon.setName(myScan.next());
+
+        System.out.println("Enter an integer (1-50) for hit points: ");
+        tempPokemon.setHitPoints(myScan.nextInt());
+        while (!(0 < tempPokemon.getHitPoints() && tempPokemon.getHitPoints() <= MAX_HIT_POINTS)) {
+            System.out.println("ERROR. Enter an integer (1-50) for hit points: ");
+            tempPokemon.setHitPoints(myScan.nextInt());
+        }
+
+        System.out.println("Enter an integer (1-49) for attack: ");
+        tempPokemon.setAttackLevel(myScan.nextInt());
+        while (!(0 < tempPokemon.getAttackLevel() && tempPokemon.getAttackLevel() < MAX_STAT)) {
+            System.out.println("ERROR. Enter an integer (1-49) for attack: ");
+            tempPokemon.setAttackLevel(myScan.nextInt());
+        }
+
+        int maxDef = MAX_STAT - tempPokemon.getAttackLevel();
+        System.out.println("Enter an integer (1-" + maxDef + ") for defense: ");
+        tempPokemon.setDefenseLevel(myScan.nextInt());
+        while (!(0 < tempPokemon.getDefenseLevel() && tempPokemon.getDefenseLevel() <= maxDef)) {
+            System.out.println("ERROR. Enter an integer (1-" + maxDef + ") for defense: ");
+            tempPokemon.setDefenseLevel(myScan.nextInt());
+        }
+
+        return tempPokemon;
     }
 
     /**
